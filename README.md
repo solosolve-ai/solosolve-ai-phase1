@@ -1,6 +1,5 @@
 ![image](https://github.com/user-attachments/assets/18c2c4e3-7823-4107-8cc7-afda5ac0875d)
 
-# SoloSolve AI
 
 Welcome to **SoloSolve AI**, a cutting-edge project designed to revolutionize customer complaint management for online delivery services through advanced AI-powered solutions.
 
