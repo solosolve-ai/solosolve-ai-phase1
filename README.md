@@ -74,6 +74,15 @@ The project focuses on automating complaint intake, classification, prioritizati
 6. **Deployment:** Jun 2025  
 
 ---
+## **DataBase Used**
+https://www.consumerfinance.gov/data-research/consumer-complaints/search/?chartType=line&dateInterval=Month&dateRange=All&date_received_max=2025-01-05&date_received_min=2011-12-01&has_narrative=true&lens=Product&searchField=all&subLens=sub_product&tab=Trends
+
+https://www.consumerfinance.gov/complaint/data-use/
+
+https://www.kaggle.com/datasets/selener/consumer-complaint-database?select=rows.csv
+[18:21, 6.1.2025] אלון תואר: מה אתם עולים?
+
+---
 
 ## 🔒 **Compliance and Security**
 - Full adherence to GDPR and relevant AI regulations.
