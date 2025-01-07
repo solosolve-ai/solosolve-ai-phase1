@@ -1,0 +1,53 @@
+Table users {
+  user_id SERIAL [pk]
+  username VARCHAR(50) [not null, unique]
+  email VARCHAR(100) [not null, unique]
+  password_hash TEXT [not null]
+  account_type VARCHAR(20) [not null]
+  created_at TIMESTAMP
+  updated_at TIMESTAMP
+}
+
+Table complaints {
+  complaint_id SERIAL [pk]
+  user_id INTEGER [not null, ref: > users.user_id]
+  product VARCHAR(100) [not null]
+  sub_product VARCHAR(100)
+  issue VARCHAR(100) [not null]
+  sub_issue VARCHAR(100)
+  consumer_complaint_narrative TEXT
+  date_received DATE [not null]
+  channel_of_complaint VARCHAR(50)
+  complaint_status VARCHAR(50) [not null]
+  complaint_resolution_time INTERVAL
+  compensation_provided TEXT
+  recurring_complaint_indicator BOOLEAN [default: false]
+  feedback_rating INTEGER
+  created_at TIMESTAMP
+  updated_at TIMESTAMP
+}
+
+Table complaint_nlp_analysis {
+  analysis_id SERIAL [pk]
+  complaint_id INTEGER [not null, ref: > complaints.complaint_id]
+  sentiment_score NUMERIC(3,2)
+  complaint_category_confidence NUMERIC(3,2)
+  urgency_level VARCHAR(50)
+  analysis_date TIMESTAMP
+}
+
+Table complaint_actions {
+  action_id SERIAL [pk]
+  complaint_id INTEGER [not null, ref: > complaints.complaint_id]
+  action_type VARCHAR(100) [not null]
+  action_description TEXT
+  action_timestamp TIMESTAMP
+}
+
+Table user_interactions {
+  interaction_id SERIAL [pk]
+  complaint_id INTEGER [not null, ref: > complaints.complaint_id]
+  user_id INTEGER [not null, ref: > users.user_id]
+  interaction_count INTEGER [default: 0, not null]
+  last_interaction_date TIMESTAMP
+}
