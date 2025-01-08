@@ -119,7 +119,7 @@ Ideal for companies like **Wolt** and **10bis**, aiming to:
 
 ## 🌐 **Get Involved**  
 
-We value collaboration! Explore our [GitHub Repository](https://github.com/solosolve-ai/solosolve-ai) to contribute, provide feedback, or track our progress.  
+We value collaboration! Explore our [GitHub Repository](https://github.com/solosolve-ai/solosolve-ai) to contribute, provide feedback, or track our progress. **if hidden ask for access by reaching shoval.
 
 ---
 
