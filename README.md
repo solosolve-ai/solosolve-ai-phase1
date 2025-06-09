@@ -9,125 +9,99 @@
   </a>
 </p>
 
-# **Welcome to SoloSolve AI**
+# **Your SoloSolver**
 
-Revolutionizing customer complaint management for online delivery services with cutting-edge AI-driven solutions.  
+![demo](https://github.com/solosolve-ai/solosolve-ai/blob/main/docs/solosolve-demo.gif)
 
----
-
-## 🌟 **About the Project**  
-
-**Mission:**  
-Empowering delivery service providers with seamless, automated complaint management to enhance customer satisfaction and operational efficiency.
-
-**Audience:**  
-Ideal for companies like **Wolt** and **10bis**, aiming to:  
-- Streamline complaint resolution.  
-- Enhance user experience with AI-backed precision.  
+An AI-Powered Customer Complaint Resolution System for Amazon Fashion, built on a foundation of SOTA MLOps, advanced data engineering, and state-of-the-art Large Language Models.
 
 ---
 
-## 🚀 **Core Features**  
+## 🌟 **Project Vision**
 
-### **1. Intelligent Complaint Classification**  
-- NLP-powered categorization for swift resolution.  
-- Priority assignment based on urgency and sentiment.
-
-### **2. Resolution Recommendation Engine**  
-- Automated suggestions tailored to organizational rules.  
-- Manual override for complex cases.
-
-### **3. Advanced Sentiment Analysis**  
-- Tracks emotional tone and urgency for resolution prioritization.
-
-### **4. Proactive Insights**  
-- Identifies recurring issues to enable systemic improvements.
-
-### **5. Role-Based Dashboards**  
-- Customizable views for users, support agents, and administrators.
-
-### **6. Real-Time Notifications**  
-- Multi-channel updates across email, app, and more.
-
-### **7. Batch Complaint Processing**  
-- Handles high complaint volumes with efficient uploads.
-
-### **8. Analytics and Reporting**  
-- Actionable insights into complaint trends, sentiment shifts, and resolution KPIs.
+To create a highly accurate, scalable, and continuously improving AI-powered customer complaint resolution system for Amazon Fashion. SoloSolver Pro will leverage multimodal inputs, deep contextual understanding through RAG, robust data engineering practices, and efficient, SOTA LLM fine-tuning and deployment techniques to provide fair, consistent, and empathetic customer support, ultimately enhancing customer satisfaction and operational efficiency.
 
 ---
 
-## 📊 **Key Metrics**  
+## 🚀 **Core Features**
 
-- **40%** reduction in average resolution time.  
-- **90%** first-time resolution rate.  
-- **20%** increase in customer satisfaction within six months.  
+SoloSolver Pro is engineered with a multi-faceted approach to complaint resolution, moving beyond simple classification to a deep, contextual understanding of each case.
 
----
+### **1. SOTA LLM-Powered Resolution Engine**
+- **Fine-Tuned Gemma-3 Model:** Utilizes a `google/gemma-3-4b-it` model fine-tuned with QLoRA for state-of-the-art performance in generating structured, empathetic, and policy-aligned resolutions.
+- **Multi-Task Learning:** The model simultaneously learns to generate a comprehensive JSON analysis, classify complaint drivers, determine severity, and predict sentiment, all from a single input.
 
-## 🛠 **Tech Stack**
+### **2. Advanced RAG & Contextual Understanding**
+- **Dynamic Policy Retrieval:** Implements a sophisticated Retrieval-Augmented Generation (RAG) pipeline using a semantic vector search (ChromaDB/Vertex AI) on a meticulously chunked Policy Database to ground every decision in company policy.
+- **Dynamic User Profiling (UDP):** Generates and queries user-specific profiles on-the-fly, considering their historical interactions, purchase value, and past complaint patterns to provide personalized and fair resolutions.
 
-### **Backend**  
-- **Framework:** Flask (RESTful API development).  
-- **Database:** PostgreSQL (structured, scalable, GDPR-compliant).
+### **3. Multimodal Complaint Analysis**
+- **Conceptual Image Analysis:** Even without direct image processing in the initial phase, the model is prompted to infer the context of user-submitted images based on the complaint text, enabling a more holistic analysis of issues like "item arrived damaged."
 
-### **Frontend**  
-- Responsive, mobile-friendly interfaces.
-
-### **Cloud**  
-- **Primary:** AWS (NLP tools and scalability).  
-- **Alternate:** Google Cloud.  
-
-### **Tools**  
-- **Version Control:** GitHub (collaboration, CI/CD).  
-- **Security:** AES-256 encryption and role-based access control.
+### **4. Scalable Data Engineering Backbone**
+- **Modern Data Stack:** Leverages Google Cloud Platform (GCS, BigQuery) and `dbt` for a scalable, version-controlled, and testable data pipeline, transforming raw review data into a "gold standard" transaction database.
+- **Automated SFT Data Curation:** Employs stratified sampling and SQL UDFs within BigQuery to programmatically curate a high-quality, balanced Supervised Fine-Tuning (SFT) dataset, ensuring model robustness.
 
 ---
 
-## 🗂 **Data Sources**  
+## 🛠️ **Tech Stack**
 
-- [Consumer Financial Protection Bureau Complaint Database](https://www.consumerfinance.gov/data-research/consumer-complaints)  
-- [Kaggle Consumer Complaint Dataset](https://www.kaggle.com/datasets/selener/consumer-complaint-database)
+Our stack is chosen for scalability, reproducibility, and SOTA performance.
 
----
-
-## 🛡️ **Compliance & Security**  
-
-- GDPR-compliant data handling.  
-- Explainable AI for transparency and trust.  
-- Comprehensive security with AES-256 encryption and MFA.
-
----
-
-## 📅 **Timeline**  
-
-| Phase                     | Timeline               | Deliverable                         |
-|---------------------------|------------------------|--------------------------------------|
-| Architecture & Design     | Nov 2024 – Dec 2024   | Detailed architecture blueprint.    |
-| Core Development          | Dec 2024 – Mar 2025   | AI-driven complaint management.     |
-| Customization Tools       | Feb 2025 – Apr 2025   | Configurable client-facing features.|
-| UI/UX Design              | Mar 2025 – May 2025   | Intuitive interfaces.               |
-| Integration & Testing     | Apr 2025 – Jun 2025   | External tool integration.          |
-| Deployment                | Jun 2025             | Stable, scalable platform.          |
+| Category                | Technologies & Tools                                                                         |
+|-------------------------|----------------------------------------------------------------------------------------------|
+| **Cloud & Data Platform** | Google Cloud Platform (GCP), Google Cloud Storage (GCS), BigQuery                            |
+| **Data Engineering & ETL**| `dbt`, Google Dataproc / Spark, Pandas, Parquet                                              |
+| **Model & AI Frameworks** | PyTorch, Hugging Face `transformers`, `peft` (QLoRA), `trl` (SFT, DPO), `bitsandbytes` (4-bit Q) |
+| **LLM & RAG**             | Google Gemma-3, LangChain/LlamaIndex, ChromaDB, Vertex AI Vector Search                      |
+| **MLOps & Deployment**    | Docker, Vertex AI (Experiments, Model Registry, Pipelines), Google Cloud Run (GPU), FastAPI  |
+| **Evaluation & Analysis** | `evaluate` (ROUGE, BLEU, BERTScore), Scikit-learn, Matplotlib, Seaborn                        |
 
 ---
 
-## 👥 **Collaborators**  
+## 🗂️ **Data Sources**
 
-- **Shoval Benjer**  
-- **Adir Amar**  
-- **Alon Berkovich**  
-
----
-
-## 🌐 **Get Involved**  
-
-We value collaboration! Explore our [GitHub Repository](https://github.com/solosolve-ai/solosolve-ai) to contribute, provide feedback, or track our progress. **if hidden ask for access by reaching shoval.
+The core dataset for training and analysis is sourced from:
+- **Raw Amazon Fashion Reviews:** `McAuley-Lab/Amazon-Reviews-2023` (config: `raw_review_Amazon_Fashion`)
+- **Raw Amazon Fashion Metadata:** `McAuley-Lab/Amazon-Reviews-2023` (config: `raw_meta_Amazon_Fashion`)
 
 ---
 
-Join us on this transformative journey to redefine customer service with SoloSolve AI. Together, we innovate for better service.  
+## 📊 **Evaluation & Metrics**
 
---- 
+Model performance is rigorously assessed across both generation and classification tasks to ensure high quality and reliability.
 
-Would you like to add or customize specific sections further?
+- **Generation Quality:** Measured with **ROUGE-L, BLEU, BERTScore**, and **JSON Schema Adherence Rate**.
+- **Classification Accuracy:** Measured with **F1-Score, Precision, Recall, and ROC AUC** for each classification head.
+- **Performance:** Includes **inference latency** and **GPU memory usage** benchmarks for the quantized model to ensure deployment feasibility.
+- **Qualitative Analysis:** A side-by-side comparison against the base Gemma-3 model to demonstrate the significant improvements from fine-tuning.
+
+---
+
+## 🗺️ **Project Roadmap**
+
+The project is structured in three ambitious phases, from foundational model development to a fully autonomous, learning agent.
+
+| Phase                                     | Duration (Est.)  | Key Objectives & Deliverables                                                                                                                                                            |
+|-------------------------------------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Phase 1: SOTA Foundation & Core Model** | 3-4 Months       | **Objectives:** Build data foundation, generate SFT dataset, fine-tune & evaluate Gemma-3.<br/>**Deliverables:** Fine-tuned Gemma-3 model (LoRA adapters & heads), comprehensive evaluation report (with radar plots), GCP deployment blueprint, reproducible Docker environment. |
+| **Phase 2: Cloud Integration & Advanced RAG** | 3-4 Months       | **Objectives:** Productionize data pipelines, implement advanced RAG, integrate with MLOps tooling.<br/>**Deliverables:** Vertex AI Pipeline for CI/CD/CT, migration to Vertex AI Vector Search, implementation of a reranker, operational dashboards.          |
+| **Phase 3: Agentic Capabilities & Continuous Learning** | Ongoing          | **Objectives:** Evolve into an autonomous agent, learn from feedback.<br/>**Deliverables:** LangChain-based agent with ReAct framework, DPO-tuned model from user feedback, a continuous learning loop, exploration of true multimodal models.                 |
+
+---
+
+## 👥 **Collaborators**
+
+- **Shoval Benjer**
+- **Adir Amar**
+- **Alon Berkovich**
+
+---
+
+## 🌐 **Get Involved**
+
+We value collaboration! Explore our [GitHub Repository](https://github.com/solosolve-ai/solosolve-ai) to contribute, provide feedback, or track our progress. If the repository is private, please contact one of the collaborators for access.
+
+---
+
+Join us on this transformative journey to redefine customer service with SoloSolver Pro. Together, we innovate for better service.
