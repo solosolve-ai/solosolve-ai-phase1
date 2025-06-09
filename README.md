@@ -19,6 +19,8 @@ An AI-Powered Customer Complaint Resolution System for Amazon Fashion, built on 
 
 ## 🌟 **Project Vision**
 
+![image](https://github.com/user-attachments/assets/82da3298-4a29-444e-a45f-a74cc921a159)
+
 To create a highly accurate, scalable, and continuously improving AI-powered customer complaint resolution system for Amazon Fashion. SoloSolver Pro will leverage multimodal inputs, deep contextual understanding through RAG, robust data engineering practices, and efficient, SOTA LLM fine-tuning and deployment techniques to provide fair, consistent, and empathetic customer support, ultimately enhancing customer satisfaction and operational efficiency.
 
 ---
