@@ -1,10 +1,13 @@
 ![image](https://github.com/user-attachments/assets/18c2c4e3-7823-4107-8cc7-afda5ac0875d)
 
-
-
-Here is a refined and high-end version of your README file based on the provided context and additional insights from the documents:
-
----
+<p align="center">
+  <a href="https://solosolve-ai-demo.lovable.app/" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Online-green?style=for-the-badge" alt="Live Demo"/>
+  </a>
+  <a href="https://github.com/solosolve-ai/solosolve-ai-demo" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%92%BB%20GitHub%20Repo-Click%20Here-blue?style=for-the-badge" alt="Dev Repo"/>
+  </a>
+</p>
 
 # **Welcome to SoloSolve AI**
 
