@@ -1,111 +1,229 @@
+# SoloSolve AI: From Raw Data to Actionable Insight
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/18c2c4e3-7823-4107-8cc7-afda5ac0875d" width="600">
 </p>
 
 <p align="center">
-  <a href="https://solosolve-ai-demo.lovable.app/" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Online-green?style=for-the-badge" alt="Live Demo"/>
+  <a href="https://huggingface.co/ShovalBenjer/gemma-3-270m-fashion-multitask_v1" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-Hugging%20Face-yellow?style=for-the-badge" alt="Hugging Face Model"/>
   </a>
   <a href="https://github.com/solosolve-ai/solosolve-ai-demo" target="_blank">
     <img src="https://img.shields.io/badge/%F0%9F%92%BB%20GitHub%20Repo-Click%20Here-blue?style=for-the-badge" alt="Dev Repo"/>
   </a>
 </p>
 
-# **Your SoloSolver**
-
-![demo](https://github.com/solosolve-ai/solosolve-ai/blob/main/docs/solosolve-demo.gif)
-
-An AI-Powered Customer Complaint Resolution System for Amazon Fashion, built on a foundation of SOTA MLOps, advanced data engineering, and state-of-the-art Large Language Models.
+An end-to-end MLOps project demonstrating a principled journey from a complex, retrieval-augmented 4B parameter model to a hyper-efficient, 270M parameter multi-task classifier that achieves 100% accuracy on key classification tasks for Amazon Fashion complaints.
 
 ---
 
-## 🌟 **Project Vision**
+## 1. Executive Summary
 
-![image](https://github.com/user-attachments/assets/82da3298-4a29-444e-a45f-a74cc921a159)
+**Problem:** Automating customer complaint resolution requires understanding unstructured text and mapping it to discrete business actions. This is hindered by the lack of high-quality, multi-label training data, forcing teams into complex and often noisy data generation pipelines.
 
-To create a highly accurate, scalable, and continuously improving AI-powered customer complaint resolution system for Amazon Fashion. SoloSolver Pro will leverage multimodal inputs, deep contextual understanding through RAG, robust data engineering practices, and efficient, SOTA LLM fine-tuning and deployment techniques to provide fair, consistent, and empathetic customer support, ultimately enhancing customer satisfaction and operational efficiency.
+**Solution:** This project contrasts two approaches. An initial, complex Retrieval-Augmented Fine-Tuning (RAFT) pipeline with a **Gemma 3-4B** model yielded suboptimal results due to noise propagation. We pivoted to a radically simplified and superior methodology:
+1.  **High-Fidelity Data Generation:** A powerful "teacher" model (**Gemini 2.5 Pro**) was used to directly generate a pristine, 4.5k-sample multi-task dataset, a process framed by the **Information Bottleneck** principle.
+2.  **Efficient Fine-Tuning:** A hyper-efficient **Gemma 3-270M** "student" model was fine-tuned on this dataset using **QLoRA**, a parameter-efficient technique grounded in low-rank matrix factorization.
 
----
-
-## 🚀 **Core Features**
-
-SoloSolver Pro is engineered with a multi-faceted approach to complaint resolution, moving beyond simple classification to a deep, contextual understanding of each case.
-
-### **1. SOTA LLM-Powered Resolution Engine**
-- **Fine-Tuned Gemma-3 Model:** Utilizes a `google/gemma-3-4b-it` model fine-tuned with QLoRA for state-of-the-art performance in generating structured, empathetic, and policy-aligned resolutions.
-- **Multi-Task Learning:** The model simultaneously learns to generate a comprehensive JSON analysis, classify complaint drivers, determine severity, and predict sentiment, all from a single input.
-
-### **2. Advanced RAG & Contextual Understanding**
-- **Dynamic Policy Retrieval:** Implements a sophisticated Retrieval-Augmented Generation (RAG) pipeline using a semantic vector search (ChromaDB/Vertex AI) on a meticulously chunked Policy Database to ground every decision in company policy.
-- **Dynamic User Profiling (UDP):** Generates and queries user-specific profiles on-the-fly, considering their historical interactions, purchase value, and past complaint patterns to provide personalized and fair resolutions.
-
-### **3. Multimodal Complaint Analysis**
-- **Conceptual Image Analysis:** Even without direct image processing in the initial phase, the model is prompted to infer the context of user-submitted images based on the complaint text, enabling a more holistic analysis of issues like "item arrived damaged."
-
-### **4. Scalable Data Engineering Backbone**
-- **Modern Data Stack:** Leverages Google Cloud Platform (GCS, BigQuery) and `dbt` for a scalable, version-controlled, and testable data pipeline, transforming raw review data into a "gold standard" transaction database.
-- **Automated SFT Data Curation:** Employs stratified sampling and SQL UDFs within BigQuery to programmatically curate a high-quality, balanced Supervised Fine-Tuning (SFT) dataset, ensuring model robustness.
+**Outcome:** The final 270M parameter model achieved **100% accuracy** on all four classification tasks (actionability, information completeness, category, and resolution) on a held-out test set. This demonstrates that for specialized tasks, the quality and information-theoretic compression of the training signal are of greater importance than the complexity of the data generation pipeline or raw model size.
 
 ---
 
-## 🛠️ **Tech Stack**
+## 2. System Architecture Overview
 
-Our stack is chosen for scalability, reproducibility, and SOTA performance.
+The system architecture is a two-phase process: a one-time, offline **Data Generation & Training Pipeline** and a lightweight, online **Inference Endpoint**.
 
-| Category                | Technologies & Tools                                                                         |
-|-------------------------|----------------------------------------------------------------------------------------------|
-| **Cloud & Data Platform** | Google Cloud Platform (GCP), Google Cloud Storage (GCS), BigQuery                            |
-| **Data Engineering & ETL**| `dbt`, Google Dataproc / Spark, Pandas, Parquet                                              |
-| **Model & AI Frameworks** | PyTorch, Hugging Face `transformers`, `peft` (QLoRA), `trl` (SFT, DPO), `bitsandbytes` (4-bit Q) |
-| **LLM & RAG**             | Google Gemma-3, LangChain/LlamaIndex, ChromaDB, Vertex AI Vector Search                      |
-| **MLOps & Deployment**    | Docker, Vertex AI (Experiments, Model Registry, Pipelines), Google Cloud Run (GPU), FastAPI  |
-| **Evaluation & Analysis** | `evaluate` (ROUGE, BLEU, BERTScore), Scikit-learn, Matplotlib, Seaborn                        |
+### Data Generation & Training Pipeline (Offline)
 
----
+```mermaid
+graph TD
+    A[Raw Data Source: Amazon Reviews >65k] --> B{Data Validation & EDA};
+    B --> C[DuckDB/Polars: Filtering for Complaints];
+    C --> D{Gemini 2.5 Pro Teacher API};
+    D --> |Policy-Guided Prompting| E[Synthetic SFT Dataset: 4.5k Samples];
+    E --> F[Gemma 3-270M Student Model];
+    G[QLoRA Config: r=16, 4-bit NF4] --> F;
+    F --> H{PyTorch/Hugging Face Trainer};
+    H --> I[Fine-Tuned Artifacts];
+    I --> I1(LoRA Adapters);
+    I --> I2(Classification Heads);
+    I --> I3(Tokenizer);
+    I --> J[Hugging Face Hub];
 
-## 🗂️ **Data Sources**
+    style A fill:#e3f2fd,stroke:#333,stroke-width:2px;
+    style E fill:#d1c4e9,stroke:#333,stroke-width:2px;
+    style I fill:#c8e6c9,stroke:#333,stroke-width:2px;
+    style J fill:#ffcdd2,stroke:#333,stroke-width:2px;
+```
 
-The core dataset for training and analysis is sourced from:
-- **Raw Amazon Fashion Reviews:** `McAuley-Lab/Amazon-Reviews-2023` (config: `raw_review_Amazon_Fashion`)
-- **Raw Amazon Fashion Metadata:** `McAuley-Lab/Amazon-Reviews-2023` (config: `raw_meta_Amazon_Fashion`)
+### Inference Flow (Online)
 
----
-
-## 📊 **Evaluation & Metrics**
-
-Model performance is rigorously assessed across both generation and classification tasks to ensure high quality and reliability.
-
-- **Generation Quality:** Measured with **ROUGE-L, BLEU, BERTScore**, and **JSON Schema Adherence Rate**.
-- **Classification Accuracy:** Measured with **F1-Score, Precision, Recall, and ROC AUC** for each classification head.
-- **Performance:** Includes **inference latency** and **GPU memory usage** benchmarks for the quantized model to ensure deployment feasibility.
-- **Qualitative Analysis:** A side-by-side comparison against the base Gemma-3 model to demonstrate the significant improvements from fine-tuning.
-
----
-
-## 🗺️ **Project Roadmap**
-
-The project is structured in three ambitious phases, from foundational model development to a fully autonomous, learning agent.
-
-| Phase                                     | Duration (Est.)  | Key Objectives & Deliverables                                                                                                                                                            |
-|-------------------------------------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Phase 1: SOTA Foundation & Core Model** | 3-4 Months       | **Objectives:** Build data foundation, generate SFT dataset, fine-tune & evaluate Gemma-3.<br/>**Deliverables:** Fine-tuned Gemma-3 model (LoRA adapters & heads), comprehensive evaluation report (with radar plots), GCP deployment blueprint, reproducible Docker environment. |
-| **Phase 2: Cloud Integration & Advanced RAG** | 3-4 Months       | **Objectives:** Productionize data pipelines, implement advanced RAG, integrate with MLOps tooling.<br/>**Deliverables:** Vertex AI Pipeline for CI/CD/CT, migration to Vertex AI Vector Search, implementation of a reranker, operational dashboards.          |
-| **Phase 3: Agentic Capabilities & Continuous Learning** | Ongoing          | **Objectives:** Evolve into an autonomous agent, learn from feedback.<br/>**Deliverables:** LangChain-based agent with ReAct framework, DPO-tuned model from user feedback, a continuous learning loop, exploration of true multimodal models.                 |
-
----
-
-## 👥 **Collaborators**
-
-- **Shoval Benjer**
-- **Adir Amar**
-- **Alon Berkovich**
+```mermaid
+graph TD
+    subgraph Inference Endpoint
+        A[User Input: Raw Complaint Text] --> B{Tokenizer};
+        B --> C[Fine-Tuned Gemma 3-270M];
+        D[LoRA Adapters] --> C;
+        E[Classification Heads] --> C;
+        C --> F{Pooled Transformer Output};
+        F --> G1[Head 1: Actionability];
+        F --> G2[Head 2: Category];
+        F --> G3[Head 3: Resolution];
+        F --> G4[Head 4: Info Complete];
+        G1 & G2 & G3 & G4 --> H[Structured JSON Output];
+    end
+    
+    style C fill:#d1c4e9,stroke:#333,stroke-width:2px;
+    style H fill:#c8e6c9,stroke:#333,stroke-width:2px;
+```
 
 ---
 
-## 🌐 **Get Involved**
+## 3. Key Features
 
-We value collaboration! Explore our [GitHub Repository](https://github.com/solosolve-ai/solosolve-ai) to contribute, provide feedback, or track our progress. If the repository is private, please contact one of the collaborators for access.
+*   **Multi-Task Classification:** Simultaneously predicts four distinct labels from a single input, providing a holistic analysis of each complaint.
+*   **Hyper-Efficient Footprint:** The final model is only 270M parameters, enabling low-latency, cost-effective deployment on modest GPU hardware.
+*   **State-of-the-Art Performance:** Achieves **100% accuracy, precision, recall, and F1-score** on all four classification tasks on the held-out evaluation set.
+*   **Principled Simplification:** Demonstrates the superiority of a high-signal, low-noise data pipeline over more complex, retrieval-augmented approaches for this task domain.
+*   **Reproducible & Open:** The entire training process, model artifacts, and evaluation are open-sourced and documented for full reproducibility.
 
 ---
 
-Join us on this transformative journey to redefine customer service with SoloSolver Pro. Together, we innovate for better service.
+## 4. Repository Structure
+
+The project is organized for clarity and modularity.
+
+```
+.
+├── notebooks/
+│   ├── 01_sft_data_generation.ipynb   # Data validation, EDA, and Gemini-based SFT data creation.
+│   └── 02_gemma3_multitask_finetune.ipynb # QLoRA fine-tuning, evaluation, and model push to Hub.
+├── data/
+│   └── raw/                           # Placeholder for raw Amazon Fashion review data.
+├── models/
+│   └── gemma-3-270m-fashion-multitask_v1/ # Output directory for trained model artifacts.
+├── scripts/
+│   └── ...                            # (Future) Utility scripts for data processing or inference.
+└── README.md                          # This file.
+```
+
+---
+
+## 5. Technical Deep Dive
+
+### 5.1. The Information Bottleneck Principle in Data Generation
+The success of this project hinges on the quality of the synthetic dataset. The process of using Gemini 2.5 Pro to transform unstructured text into a few discrete labels is a practical application of the **Information Bottleneck (IB) theory**. We created a representation (the JSON label) that maximally compresses the input text ($$I(X;Z)$$ is minimized) while preserving maximal information about the target task ($$I(Z;Y)$$ is maximized). This information-theoretically optimal dataset enables the small student model to learn efficiently.
+
+### 5.2. QLoRA: Low-Rank Adaptation and Optimal Quantization
+We employed QLoRA for parameter-efficient fine-tuning.
+*   **Low-Rank Adaptation (LoRA):** The model update $$\Delta W$$ is factorized as $$\Delta W = BA$$, where $$A \in \mathbb{R}^{16 \times k}$$ and $$B \in \mathbb{R}^{d \times 16}$$. This assumes the task's **intrinsic dimensionality** is low (rank `r=16`), drastically reducing trainable parameters.
+*   **NF4 Quantization:** The base model's weights are quantized to 4-bit using NormalFloat (NF4). This scheme is derived from rate-distortion theory and is provably optimal for normally distributed weights, minimizing quantization error for a fixed bit rate.
+
+### 5.3. Architecture Decision Record (ADR): Pivot from RAFT to Direct Distillation
+*   **Decision:** Abandoned the complex Retrieval-Augmented Fine-Tuning (RAFT) pipeline in favor of a direct, non-retrieval-based knowledge distillation pipeline.
+*   **Context:** The initial RAFT approach with a 4B model produced noisy labels and suboptimal performance (e.g., F1-score of 0.37 on `complaint_category`). The retrieval step often introduced irrelevant context, confusing the teacher model.
+*   **Consequences:** The simplified pipeline produced a pristine, high-signal dataset. This enabled a much smaller 270M model to achieve perfect classification scores, validating the hypothesis that for this task, the quality of the distilled knowledge is paramount over augmenting it with potentially noisy external context.
+
+---
+
+## 6. Setup & Installation
+
+**Prerequisites:**
+*   Python 3.10+
+*   NVIDIA GPU with CUDA 11.8+ (for QLoRA)
+*   An active Hugging Face account with a write-access token.
+
+**Quickstart:**
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/solosolve-ai/solosolve-ai-demo.git
+    cd solosolve-ai-demo
+    ```
+
+2.  **Install dependencies:**
+    The notebooks contain the necessary `pip install` commands in their initial cells. It is recommended to use a virtual environment.
+
+3.  **Set up credentials:**
+    *   Create a `.env` file or set environment variables for your `GOOGLE_API_KEY` and `HUGGING_FACE_TOKEN`.
+    *   The notebooks will prompt for login if tokens are not found.
+
+4.  **Run the notebooks sequentially:**
+    *   Execute `01_sft_data_generation.ipynb` to create the training dataset.
+    *   Execute `02_gemma3_multitask_finetune.ipynb` to train the model.
+
+---
+
+## 7. API / Module Documentation
+
+The core logic is encapsulated within the `GemmaComplaintResolver` PyTorch module (`gemma3.ipynb`, Cell 5).
+
+*   **Initialization:** `GemmaComplaintResolver(base_model_name_or_path, num_labels_dict, ...)`
+*   **Forward Pass:**
+    *   **Input:** `input_ids`, `attention_mask`, and optional labels for each task (e.g., `label_is_actionable`).
+    *   **Output:** A dictionary containing the total `loss` and logits for each classification head (e.g., `logits_is_actionable`).
+*   **Function-Calling Schema (Implicit):** The final structured output for inference follows this JSON schema:
+    ```json
+    {
+      "is_actionable": true,
+      "info_complete": true,
+      "complaint_category": "Damaged or Defective",
+      "resolution_recommendation": "Replacement"
+    }
+    ```
+
+---
+
+## 8. Evaluation & Benchmarks
+
+The fine-tuned Gemma 3-270M model was evaluated against the base model with untrained (randomly initialized) heads.
+
+### Comparative Performance Metrics
+| Task                      | Fine-Tuned Model (F1-Score) | Base Model (F1-Score) |
+|---------------------------|-----------------------------|-----------------------|
+| `is_actionable`           | **1.0000**                  | 0.8648                |
+| `info_complete`           | **1.0000**                  | 0.9574                |
+| `complaint_category`      | **1.0000**                  | 0.1179                |
+| `resolution_recommendation`| **1.0000**                  | 0.1899                |
+
+### F1-Score Radar Chart
+<img width="1115" height="925" alt="image" src="https://github.com/user-attachments/assets/a0365df7-101c-477e-a4f4-d756691bd4c0" />
+
+### Confusion Matrices (Fine-Tuned Model)
+The confusion matrices for all four tasks are perfect identity matrices, indicating zero misclassifications on the test set.
+<img width="1989" height="480" alt="image" src="https://github.com/user-attachments/assets/10f1ff8b-6629-4b63-b4cf-1bfcefe30005" />
+
+---
+
+## 9. Real-World Use Cases
+
+*   **Automated Ticketing:** Instantly categorize incoming support tickets, route them to the correct department, and tag them with required actions.
+*   **First-Response Agent:** Serve as a Tier-1 support agent, providing instant, policy-aligned analysis and recommended resolutions for human agents to review.
+*   **Business Analytics:** Aggregate the structured outputs to provide real-time dashboards on product quality issues, sizing problems, and logistics failures.
+
+---
+
+## 10. Roadmap
+
+*   **v1.1 (Q3 2025):** Productionize the inference model as a scalable microservice using Google Cloud Run or Vertex AI Endpoints. Implement a robust MLOps pipeline for drift detection and automated retraining alerts.
+*   **v1.2 (Q4 2025):** Evolve the system into an **agentic workflow**. Train the model to generate executable actions (e.g., API calls to a CRM) and integrate with external systems, transitioning towards a Large Action Model (LAM).
+*   **v2.0 (2026):** Implement a continuous learning loop using **Reinforcement Learning from AI Feedback (RLAIF)**, allowing the agent to self-improve based on the outcomes of its recommendations.
+
+---
+
+## 11. Contribution Guidelines
+
+We welcome contributions! Please follow these guidelines:
+*   **Code Style:** Adhere to PEP 8 standards. Use a linter like Black or Ruff.
+*   **Pull Requests:** Create PRs against the `develop` branch. Ensure your PR includes a clear description of the changes and passes all CI checks.
+*   **Testing:** New features should be accompanied by appropriate unit or integration tests.
+
+---
+
+## 12. License & Acknowledgements
+
+*   **License:** This project is licensed under the **Apache 2.0 License**.
+*   **Acknowledgements:**
+    *   This work relies on the foundational models provided by Google (Gemma, Gemini).
+    *   The fine-tuning process leverages the excellent open-source libraries from Hugging Face (`transformers`, `peft`, `trl`).
+    *   The initial dataset was sourced from the **McAuley-Lab/Amazon-Reviews-2023** collection.
