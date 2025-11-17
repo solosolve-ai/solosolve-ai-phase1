@@ -5,13 +5,22 @@
 </p>
 
 <p align="center">
+  <!-- Hugging Face -->
   <a href="https://huggingface.co/ShovalBenjer/gemma-3-270m-fashion-multitask_v1" target="_blank">
     <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-Hugging%20Face-yellow?style=for-the-badge" alt="Hugging Face Model"/>
   </a>
+
+  <!-- GitHub Repo -->
   <a href="https://github.com/solosolve-ai/solosolve-ai-demo" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%92%BB%20GitHub%20Repo-Click%20Here-blue?style=for-the-badge" alt="Dev Repo"/>
+    <img src="https://img.shields.io/badge/%F0%9F%92%BB%20GitHub%20Repo-Click%20Here-blue?style=for-the-badge" alt="GitHub Repo"/>
+  </a>
+
+  <!-- Live Demo -->
+  <a href="https://solosolve-ai.lovable.app/" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%9A%80%20Live%20Demo-Launch%20App-brightgreen?style=for-the-badge" alt="Live Demo"/>
   </a>
 </p>
+
 
 An end-to-end MLOps project demonstrating a principled journey from a complex, retrieval-augmented 4B parameter model to a hyper-efficient, 270M parameter multi-task classifier that achieves 100% accuracy on key classification tasks for Amazon Fashion complaints.
 
