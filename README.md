@@ -1,4 +1,6 @@
-![image](https://github.com/user-attachments/assets/18c2c4e3-7823-4107-8cc7-afda5ac0875d)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/18c2c4e3-7823-4107-8cc7-afda5ac0875d" width="600">
+</p>
 
 <p align="center">
   <a href="https://solosolve-ai-demo.lovable.app/" target="_blank">
