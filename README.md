@@ -212,7 +212,7 @@ The confusion matrices for all four tasks are perfect identity matrices, indicat
 
 ---
 
-## 10. Roadmap
+## 10. Roadmap (Upon Investment - Currently Froze)
 
 *   **v1.1 (Q3 2025):** Productionize the inference model as a scalable microservice using Google Cloud Run or Vertex AI Endpoints. Implement a robust MLOps pipeline for drift detection and automated retraining alerts.
 *   **v1.2 (Q4 2025):** Evolve the system into an **agentic workflow**. Train the model to generate executable actions (e.g., API calls to a CRM) and integrate with external systems, transitioning towards a Large Action Model (LAM).
