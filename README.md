@@ -39,6 +39,10 @@ An end-to-end MLOps project demonstrating a principled journey from a complex, r
 ---
 
 ## 2. System Architecture Overview
+<p align="center">
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/dc410320-1372-4d1b-bc44-11ea9be05054" />
+</p>
+
 
 The system architecture is a two-phase process: a one-time, offline **Data Generation & Training Pipeline** and a lightweight, online **Inference Endpoint**.
 
